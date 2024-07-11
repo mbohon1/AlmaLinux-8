@@ -99,6 +99,10 @@ echo "Internal ip = ${IP4}. External sub for ip6 = ${IP6}"
 
 echo "How many proxy do you want to create? Example: 500"
 read COUNT
+# Thêm dòng này trước khi sử dụng biến $COUNT
+if [ -z "$COUNT" ]; then
+  read -p "How many proxy do you want to create? Example: 500: " COUNT
+fi
 
 FIRST_PORT=10000
 LAST_PORT=$(($FIRST_PORT + $COUNT))
