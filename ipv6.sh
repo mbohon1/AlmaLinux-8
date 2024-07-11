@@ -90,18 +90,16 @@ install_3proxy
 echo "working folder = /home/proxy-installer"
 WORKDIR="/home/proxy-installer"
 WORKDATA="${WORKDIR}/data.txt"
-mkdir $WORKDIR && cd $_
+mkdir -p $WORKDIR && cd $_
 
 IP4=$(curl -4 -s icanhazip.com)
 IP6=$(curl -6 -s icanhazip.com | cut -f1-4 -d':')
 
 echo "Internal ip = ${IP4}. External sub for ip6 = ${IP6}"
 
-echo "How many proxy do you want to create? Example: 500"
-read COUNT
-# Thêm dòng này trước khi sử dụng biến $COUNT
+# Đảm bảo biến COUNT được gán giá trị trước khi sử dụng.
 if [ -z "$COUNT" ]; then
-  read -p "How many proxy do you want to create? Example: 500: " COUNT
+   read -p "How many proxy do you want to create? Example: 500: " COUNT
 fi
 
 FIRST_PORT=10000
