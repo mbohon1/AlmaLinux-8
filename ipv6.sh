@@ -98,9 +98,16 @@ IP6=$(curl -6 -s icanhazip.com | cut -f1-4 -d':')
 echo "Internal ip = ${IP4}. External sub for ip6 = ${IP6}"
 
 # Đảm bảo biến COUNT được gán giá trị trước khi sử dụng.
-if [ -z "$COUNT" ]; then
+while :; do
    read -p "How many proxy do you want to create? Example: 500: " COUNT
-fi
+   
+   # Kiểm tra xem COUNT có phải là số nguyên dương hay không.
+   if [ "$COUNT" -eq "$COUNT" ] 2>/dev/null && [ "$COUNT" -gt 0 ]; then 
+       break 
+   else 
+       echo "Please enter a valid positive integer."
+   fi 
+done
 
 FIRST_PORT=10000
 LAST_PORT=$(($FIRST_PORT + $COUNT))
