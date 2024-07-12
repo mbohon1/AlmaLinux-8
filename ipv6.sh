@@ -102,7 +102,7 @@ while true; do
    read -p "How many proxy do you want to create? Example: 500: " COUNT
    
    # Kiểm tra xem COUNT có phải là số nguyên dương hay không.
-   if echo "$COUNT" | grep -Eq '^[0-9]+$' && [ "$COUNT" -gt 0 ]; then 
+   if [ "$(echo "$COUNT" | grep '^[0-9]\+$')" ] && [ "$COUNT" -gt 0 ]; then 
        break 
    else 
        echo "Please enter a valid positive integer."
