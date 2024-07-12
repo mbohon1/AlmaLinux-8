@@ -85,7 +85,7 @@ gen_iptables() {
 
 # Function to configure network interfaces with IPv6 addresses for the proxies
 gen_ifconfig() {
-    awk -F "/" '{print "ifconfig eth0 inet6 add " $5 "/64"}' ${WORKDATA}
+    awk -F "/" '{print "ifconfig ${INTERFACE} inet6 add " $5 "/64"}' ${WORKDATA}
 }
 
 echo "Installing required packages..."
@@ -115,6 +115,7 @@ echo "Generating iptables rules..."
 gen_iptables >$WORKDIR/boot_iptables.sh
 
 echo "Generating network interface configurations..."
+INTERFACE=$(ip route show default | awk '/default/ {print $5}')
 gen_ifconfig >$WORKDIR/boot_ifconfig.sh
 
 chmod +x ${WORKDIR}/boot_*.sh /etc/rc.local
