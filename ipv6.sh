@@ -116,8 +116,8 @@ gen_iptables >$WORKDIR/boot_iptables.sh
 
 echo "Detecting network interface..."
 INTERFACE=$(ip route show default | awk '/default/ {print $5}')
-if [ -z "$INTERFACE" ]; then 
-   echo "No network interface found. Exiting."
+if [ ! "$(ip link show | grep "$INTERFACE")" ]; then 
+   echo "Network interface ${INTERFACE} not found. Exiting."
    exit 1 
 fi
 
