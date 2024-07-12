@@ -72,7 +72,7 @@ gen_data() {
 
 gen_iptables() {
     cat <<EOF
-$(awk -F "/" '{print "iptables -I INPUT -p tcp --dport " $4 "  -m state --state NEW -j ACCEPT"}' ${WORKDATA}) 
+$(awk -F "/" '{print "iptables -I INPUT -p tcp --dport " $4 " -m state --state NEW -j ACCEPT"}' ${WORKDATA}) 
 EOF
 }
 
@@ -102,7 +102,7 @@ while true; do
    read -p "How many proxy do you want to create? Example: 500: " COUNT
    
    # Kiểm tra xem COUNT có phải là số nguyên dương hay không.
-   if [[ "$COUNT" =~ ^[0-9]+$ ]] && [ "$COUNT" -gt 0 ]; then 
+   if echo "$COUNT" | grep -Eq '^[0-9]+$' && [ "$COUNT" -gt 0 ]; then 
        break 
    else 
        echo "Please enter a valid positive integer."
@@ -115,6 +115,7 @@ LAST_PORT=$(($FIRST_PORT + $COUNT))
 gen_data >$WORKDIR/data.txt
 gen_iptables >$WORKDIR/boot_iptables.sh
 gen_ifconfig >$WORKDIR/boot_ifconfig.sh
+
 chmod +x ${WORKDIR}/boot_*.sh /etc/rc.local
 
 gen_3proxy >/usr/local/etc/3proxy/3proxy.cfg
