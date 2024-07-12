@@ -83,9 +83,9 @@ gen_iptables() {
     awk -F "/" '{print "iptables -I INPUT -p tcp --dport " $4 " -m state --state NEW -j ACCEPT"}' ${WORKDATA}
 }
 
-# Function to configure network interfaces with IPv6 addresses for the proxies
+# Function to configure network interfaces with IPv6 addresses for the proxies, checking if the address already exists.
 gen_ifconfig() {
-    awk -F "/" '{print "ifconfig '${INTERFACE}' inet6 add " $5 "/64"}' ${WORKDATA}
+    awk -F "/" '{print "[[ $(ip addr show dev '${INTERFACE}' | grep \"$5\") ]] || ifconfig '${INTERFACE}' inet6 add " $5 "/64"}' ${WORKDATA}
 }
 
 echo "Installing required packages..."
